@@ -7,7 +7,7 @@ locals {
 resource "google_api_gateway_api" "api_gw" {
   provider     = google-beta
   api_id       = local.api_gateway_container_id
-  display_name = "The API Gateway"
+  display_name = "API Gateway"
 
 }
 
