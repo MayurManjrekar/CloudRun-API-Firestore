@@ -3,40 +3,40 @@
 ******************************************/
 
 module "cloud-run" {
-  source                  = "git::https://github.com/GBG-COE/Cloud_Factory_Engine_Modules.git//modules/CloudRun-cloud-run"
+  source                  = "./modules/CloudRun-cloud-run"
   location 		  = var.region
   project_id              = var.project_id
   service_name		  = var.cloudrun_instance_name
-  service_acc	          = var.service_acc
+  #service_acc	          = var.service_acc
   image 		  = "gcr.io/${var.project_id}/app"
 }
 
 /******************************************
 	firestore
 ******************************************/
-/*
+
 module "firestore" {
-  source                  = "git::https://github.com/GBG-COE/Cloud_Factory_Engine_Modules.git//modules/CloudRun-firestore"
+  source                  = "./modules/CloudRun-firestore"
   project_id              = var.project_id
   database_type           = "FIRESTORE_NATIVE"
   depends_on = [
     module.cloud-run
   ]
 }
-*/
+
 /*****************************************
 	VPC Subnets
 *****************************************/
 
 module "vpc" {
-  source                  = "git::https://github.com/GBG-COE/Cloud_Factory_Engine_Modules.git//modules/CloudRun-vpc"
+  source                  = "./modules/CloudRun-vpc"
   project_id              = var.project_id
   network_name            = var.vpc_name 
   auto_create_subnetworks = false
 }
 
 module "subnet" {
-  source       = "git::https://github.com/GBG-COE/Cloud_Factory_Engine_Modules.git//modules/CloudRun-subnet"
+  source       = "./modules/CloudRun-subnet"
   project_id   = var.project_id
   network_name = module.vpc.vpc.self_link
   subnets = [{
@@ -70,7 +70,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 }
 
 module "lb-http" {
-  source  	= "git::https://github.com/GBG-COE/Cloud_Factory_Engine_Modules.git//modules/CloudRun-http-lb"
+  source  	= "./modules/CloudRun-http-lb"
   name   	= var.lb_name
   project 	= var.project_id
 
