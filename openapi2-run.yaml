@@ -5,30 +5,15 @@ info:
   description: Sample API on API Gateway with a Cloud Run backend
   version: 1.0.0
 schemes:
-- https
+- http
 produces:
 - application/json
 x-google-backend:
-  address: https://book-shelf-app-me2x2dfuea-uc.a.run.app    #url of the backend cloud run 
+  address: https://book-shelf-app-6xgi7zaeea-uc.a.run.app    #url of the backend cloud run 
 paths:
-  /assets/{asset}:
-    get:
-      parameters:
-        - in: path
-          name: asset
-          type: string
-          required: true
-          description: Name of the asset.
-      summary: Assets
-      operationId: getAsset
-      responses:
-        '200':
-          description: A successful response
-          schema:
-            type: string
   /books:
     get:
-      summary: Bookstore
+      summary: Bookshelf
       operationId: books
       responses:
         '200':
@@ -38,7 +23,7 @@ paths:
 
   /books/add:
     get:
-      summary: Bookstore/add
+      summary: Bookshelf/add
       operationId: books/add
       responses:
         '200':
@@ -46,3 +31,58 @@ paths:
           schema:
             type: string
   
+  /errors:
+    get:
+      summary: errors
+      operationId: errors
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string  
+
+  /logs:
+    get:
+      summary: logs
+      operationId: logs
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string  
+
+  /books/crud:
+    get:
+      summary: /books/crud
+      operationId: books/crud
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+  /books/api:
+    get:
+      summary: /books/api
+      operationId: books/api
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string 
+
+  /books/{id}:
+      get:
+        parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: Book ID.
+        summary: List shelves
+        operationId: /:book
+        responses:
+            '200':
+              description: A successful response
+              schema:
+                type: string
