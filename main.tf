@@ -52,6 +52,21 @@ module "subnet" {
 }
 
 /******************************************
+	API Gateway
+******************************************/
+
+module "api-gateway" {
+  source                  = "./modules/CloudRun-API-Gateway"
+  region 		  = var.region
+  project_id              = var.project_id
+  api_gateway_name	  = "Bookshelf API Gateway"
+  api_id		  = "bookshelf-api-id"
+  config_name		  = "Bookshelf API Config"
+  gateway_id		  = "bookshelf-gateway-id"
+  gateway_name		  = "Bookshelf Gateway"
+}
+
+/******************************************
 	external-lb-http
 ******************************************/
 
