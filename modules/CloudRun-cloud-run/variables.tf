@@ -16,9 +16,9 @@ variable project_id {
   description = "Google Cloud project in which to create resources."
 }
 
-variable service_acc {
-  type = string
-}
+#variable service_acc {
+#  type = string
+#}
 
 // --
 
