@@ -1,0 +1,48 @@
+# openapi2-run.yaml
+swagger: '2.0'
+info:
+  title: api-id
+  description: Sample API on API Gateway with a Cloud Run backend
+  version: 1.0.0
+schemes:
+- https
+produces:
+- application/json
+x-google-backend:
+  address: https://book-shelf-app-me2x2dfuea-uc.a.run.app    #url of the backend cloud run 
+paths:
+  /assets/{asset}:
+    get:
+      parameters:
+        - in: path
+          name: asset
+          type: string
+          required: true
+          description: Name of the asset.
+      summary: Assets
+      operationId: getAsset
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  /books:
+    get:
+      summary: Bookstore
+      operationId: books
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+
+  /books/add:
+    get:
+      summary: Bookstore/add
+      operationId: books/add
+      responses:
+        '200':
+          description: A successful response
+          schema:
+            type: string
+  
