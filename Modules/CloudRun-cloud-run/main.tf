@@ -12,7 +12,7 @@ resource "google_cloud_run_service" "cloud-run" {
 
   template {
     spec {
-      service_account_name = var.service_acc
+      #service_account_name = var.service_acc
       containers {
         image   = var.image
 
