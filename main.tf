@@ -109,7 +109,7 @@ module "lb-http" {
     }
   }
   depends_on = [
-    module.cloud-run
+    google_compute_region_network_endpoint_group.serverless_neg
   ]
 }
 
