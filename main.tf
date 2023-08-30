@@ -76,11 +76,12 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
   network_endpoint_type = "SERVERLESS"
   region                = var.region
   project               = var.project_id
-  cloud_run {
-    service  = module.cloud-run.name
+  serverless_deployment  {
+    platform   = "apigateway.googleapis.com"
+    resource   = var.gateway_id #"bookshelf-gateway-id"
   }
   depends_on = [
-    module.cloud-run
+    module.api-gateway
   ]
 }
 
