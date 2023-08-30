@@ -9,7 +9,7 @@ schemes:
 produces:
 - application/json
 x-google-backend:
-  address: https://book-shelf-app-3u3y7l7buq-uc.a.run.app    #url of the backend cloud run 
+  address: https://book-shelf-app-vzkbieqjgq-uc.a.run.app   #url of the backend cloud run 
 paths:
   /books:
     get:
@@ -90,7 +90,7 @@ paths:
                 type: string
 
   /books/{id}/edit:
-      post:
+      get:
         parameters:
         - in: path
           name: id
@@ -104,4 +104,3 @@ paths:
               description: A successful response
               schema:
                 type: string
-  
