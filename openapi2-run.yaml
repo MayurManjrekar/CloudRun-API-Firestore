@@ -24,7 +24,7 @@ paths:
   /errors:
     get:
       summary: errors
-      operationId: errors
+      operationId: /errors
       responses:
         '200':
           description: A successful response
@@ -34,32 +34,12 @@ paths:
   /logs:
     get:
       summary: logs
-      operationId: logs
+      operationId: /logs
       responses:
         '200':
           description: A successful response
           schema:
             type: string  
-
-  /books/crud:
-    get:
-      summary: /books/crud
-      operationId: books/crud
-      responses:
-        '200':
-          description: A successful response
-          schema:
-            type: string
-
-  /books/api:
-    get:
-      summary: /books/api
-      operationId: books/api
-      responses:
-        '200':
-          description: A successful response
-          schema:
-            type: string 
 
   /books/{id}:
       get:
@@ -84,7 +64,7 @@ paths:
           name: id
           type: string
           required: true
-          description: add book
+          description: add a book
         summary: List shelves
         operationId: /add
         responses:
@@ -92,3 +72,36 @@ paths:
               description: A successful response
               schema:
                 type: string
+
+  /books/{id}/delete:
+      get:
+        parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: delete a book
+        summary: List shelves
+        operationId: /:book/delete
+        responses:
+            '200':
+              description: A successful response
+              schema:
+                type: string
+
+  /books/{id}/edit:
+      post:
+        parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+          description: edit a book
+        summary: List shelves
+        operationId: /:book/edit
+        responses:
+            '200':
+              description: A successful response
+              schema:
+                type: string
+  
