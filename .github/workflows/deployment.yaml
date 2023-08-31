@@ -5,7 +5,7 @@ permissions:
   contents: read
   id-token: write
 env:
-  PROJECT_ID: 	qwiklabs-gcp-00-072e9aafe5a8
+  PROJECT_ID: qwiklabs-gcp-00-afa913533ba0
 
 jobs:
   terraform1:
