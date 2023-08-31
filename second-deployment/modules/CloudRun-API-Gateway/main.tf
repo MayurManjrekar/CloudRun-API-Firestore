@@ -17,7 +17,7 @@ resource "google_api_gateway_api" "api_gw" {
   provider     = google-beta
   api_id       = var.api_id  #"api-id-tf"
   display_name = var.api_gateway_name  #"API Gateway"
-  depends_on   = [google_project_service.api-gateway , google_project_service.service-management , google_project_service.service-control]
+  #depends_on   = [google_project_service.api-gateway , google_project_service.service-management , google_project_service.service-control]
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
