@@ -137,6 +137,8 @@ jobs:
           export URL=$(gcloud run services describe book-shelf-app --region=us-central1 --format='value(status.url)' --project=${{env.PROJECT_ID}}) 
           echo $URL
           sed -i "s|XYZ|$URL|g" spec.yaml
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
              
       - name: Terraform Init
         run: terraform init
