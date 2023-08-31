@@ -1,17 +1,17 @@
-resource "google_project_service" "api-gateway" {
-  project = var.project_id
-  service = "apigateway.googleapis.com"
-}
+#resource "google_project_service" "api-gateway" {
+#  project = var.project_id
+#  service = "apigateway.googleapis.com"
+#}
 
-resource "google_project_service" "service-management" {
-  project = var.project_id
-  service = "servicemanagement.googleapis.com"
-}
+#resource "google_project_service" "service-management" {
+#  project = var.project_id
+#  service = "servicemanagement.googleapis.com"
+#}
 
-resource "google_project_service" "service-control" {
-  project = var.project_id
-  service = "servicecontrol.googleapis.com"
-}
+#resource "google_project_service" "service-control" {
+#  project = var.project_id
+#  service = "servicecontrol.googleapis.com"
+#}
 
 resource "google_api_gateway_api" "api_gw" {
   provider     = google-beta
