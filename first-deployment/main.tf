@@ -7,7 +7,7 @@ module "cloud-run" {
   location 		      = var.region
   project_id        = var.project_id
   service_name		  = var.cloudrun_instance_name
-  #service_acc	    = var.service_acc
+  service_acc	    = var.service_acc
   image 		        = "gcr.io/${var.project_id}/app"
 }
 
