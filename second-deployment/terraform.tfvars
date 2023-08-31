@@ -1,4 +1,4 @@
-project_id              = "gbg-sandbox-387923"
+project_id              = "qwiklabs-gcp-00-afa913533ba0"
 region                  = "us-central1"
 neg_name                = "serverless-neg"
 lb_name                 = "external-http-lb"
