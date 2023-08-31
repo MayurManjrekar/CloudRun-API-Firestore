@@ -14,7 +14,7 @@ module "cloud-run" {
 /******************************************
 	firestore
 ******************************************/
-
+/*
 module "firestore" {
   source                  = "./modules/CloudRun-firestore"
   project_id              = var.project_id
