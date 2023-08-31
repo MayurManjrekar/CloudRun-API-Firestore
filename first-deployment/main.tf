@@ -32,7 +32,7 @@ module "storage-bucket" {
   source                  = "./modules/CloudRun-storage-bucket"
   project_id              = var.project_id
   region 		              = var.region
-  storage_bucket_name     = var.storage_bucket_name #"storage-bucket-vgvgv"
+  storage_bucket_name     = "storage-bucket-vgvgv"
   depends_on = [
     
   ]
