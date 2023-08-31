@@ -79,8 +79,12 @@ jobs:
             gcloud --quiet auth configure-docker  
 
   terraform3:
-    name: 'Terraform Apply'
+    name: 'Terraform 1st Deployment'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore/first-deployment
     needs: terraform2
     steps:
       - name: Checkout code
@@ -90,6 +94,49 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
        
+      - name: Terraform Init
+        run: terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}    
+      
+
+      - name: Terraform Validate
+        run: terraform validate
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+
+  terraform4:
+    name: 'Terraform 2nd Deployment'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore/second-deployment
+    needs: terraform3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v2
+        
+      - name: env config 
+        run: |
+          export URL=$(gcloud run services describe book-shelf-app --region=us-central1 --format='value(status.url)') 
+          echo $URL
+          sed -i "s|XYZ|$URL|g" spec.yaml
+             
       - name: Terraform Init
         run: terraform init
         env:
