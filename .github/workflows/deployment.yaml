@@ -138,7 +138,7 @@ jobs:
         
       - name: env config 
         run: |
-          export URL=$(gcloud run services describe book-shelf-app --region=us-central1 --format='value(status.url)' --project=${{env.PROJECT_ID}}) 
+          export URL=$(gcloud run services describe book-shelf-app-001 --region=us-central1 --format='value(status.url)' --project=${{env.PROJECT_ID}}) 
           echo $URL
           sed -i "s|XYZ|$URL|g" spec.yaml
         env:
