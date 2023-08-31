@@ -130,6 +130,11 @@ jobs:
         
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: gcloud 
+        uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
+        with:
+          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
         
       - name: env config 
         run: |
