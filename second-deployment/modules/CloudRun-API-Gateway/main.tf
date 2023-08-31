@@ -14,7 +14,7 @@
 #}
 
 resource "google_api_gateway_api" "api_gw" {
-  project               = var.project
+  project               = var.project_id
   provider     = google-beta
   api_id       = var.api_id  #"api-id-tf"
   display_name = var.api_gateway_name  #"API Gateway"
@@ -22,7 +22,7 @@ resource "google_api_gateway_api" "api_gw" {
 }
 
 resource "google_api_gateway_api_config" "api_cfg" {
-  project               = var.project
+  project               = var.project_id
   provider      = google-beta
   api           = google_api_gateway_api.api_gw.api_id
   #api_config_id_prefix = "api"
@@ -36,7 +36,7 @@ resource "google_api_gateway_api_config" "api_cfg" {
 }
 
 resource "google_api_gateway_gateway" "gw" {
-  project               = var.project
+  project               = var.project_id
   provider   = google-beta
   region     = var.region
   api_config   = google_api_gateway_api_config.api_cfg.id
