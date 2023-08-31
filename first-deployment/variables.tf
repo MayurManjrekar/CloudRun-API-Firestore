@@ -29,12 +29,3 @@ variable "subnet_ip_ranges" {
   type    = string
 }
 
-variable "neg_name" {
-  description = "name of serverless network endpoint group"
-  type        = string
-}
-
-variable "lb_name" {
-  description = "name of the external load balancer created" 
-  type        = string
-}
