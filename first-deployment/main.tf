@@ -27,7 +27,7 @@ module "firestore" {
 /******************************************
 	Storage Bucket
 ******************************************/
-
+/*
 module "storage-bucket" {
   source                  = "./modules/CloudRun-storage-bucket"
   project_id              = var.project_id
