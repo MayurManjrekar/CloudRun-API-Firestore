@@ -2,9 +2,9 @@ variable "project_id" {
   type = string
 }
 
-#variable "service_acc" {
-#  type = string
-#}
+variable "service_acc" {
+  type = string
+}
 
 variable "region" {
   description = "region in which the resources would be deployed" 

@@ -3,12 +3,12 @@
 ******************************************/
 
 module "cloud-run" {
-  source                  = "./modules/CloudRun-cloud-run"
-  location 		  = var.region
-  project_id              = var.project_id
+  source            = "./modules/CloudRun-cloud-run"
+  location 		      = var.region
+  project_id        = var.project_id
   service_name		  = var.cloudrun_instance_name
-  #service_acc	          = var.service_acc
-  image 		  = "gcr.io/${var.project_id}/app"
+  #service_acc	    = var.service_acc
+  image 		        = "gcr.io/${var.project_id}/app"
 }
 
 /******************************************
@@ -31,7 +31,7 @@ module "firestore" {
 module "storage-bucket" {
   source                  = "./modules/CloudRun-storage-bucket"
   project_id              = var.project_id
-  region 		  = var.region
+  region 		              = var.region
   storage_bucket_name     = var.storage_bucket_name #"storage-bucket-vgvgv"
   depends_on = [
     
@@ -70,14 +70,14 @@ module "subnet" {
 ******************************************/
 
 module "api-gateway" {
-  source                  = "./modules/CloudRun-API-Gateway"
-  region 		  = var.region
-  project_id              = var.project_id
+  source              = "./modules/CloudRun-API-Gateway"
+  region 		          = var.region
+  project_id          = var.project_id
   api_gateway_name	  = "Bookshelf API Gateway"
-  api_id		  = "bookshelf-api-id"
-  config_name		  = "Bookshelf API Config"
-  gateway_id		  = "bookshelf-gateway-id"
-  gateway_name		  = "Bookshelf Gateway"
+  api_id		          = "bookshelf-api-id"
+  config_name		      = "Bookshelf API Config"
+  gateway_id		      = "bookshelf-gateway-id"
+  gateway_name		    = "Bookshelf Gateway"
 }
 
 /******************************************
@@ -101,7 +101,7 @@ resource "google_compute_region_network_endpoint_group" "serverless_neg" {
 
 module "lb-http" {
   source  	= "./modules/CloudRun-http-lb"
-  name   	= var.lb_name
+  name   	  = var.lb_name
   project 	= var.project_id
 
   backends = {

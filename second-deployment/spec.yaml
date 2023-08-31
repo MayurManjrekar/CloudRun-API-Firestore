@@ -9,7 +9,7 @@ schemes:
 produces:
 - application/json
 x-google-backend:
-  address: https://book-shelf-app-vzkbieqjgq-uc.a.run.app   #url of the backend cloud run 
+  address: xyz   #url of the backend cloud run 
 paths:
   /books:
     get:
