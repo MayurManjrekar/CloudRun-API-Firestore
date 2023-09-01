@@ -1,11 +1,11 @@
-name: 'Two-Tier-CloudRun-Firestore-API'
+name: 'Two-Tier-CloudRun-Firestore'
 on:
  workflow_dispatch:
 permissions:
   contents: read
   id-token: write
 env:
-  PROJECT_ID: qwiklabs-gcp-00-afa913533ba0
+  PROJECT_ID: gbg-sandbox-387923
 
 jobs:
   terraform1:
@@ -15,7 +15,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore/Bootstrap
+        working-directory: /home/runner/work/two-tier-cloudrun-firestore/two-tier-cloudrun-firestore/Bootstrap
 
     steps:
 
@@ -24,11 +24,23 @@ jobs:
       
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
+      
+    - name: Get Secrets
+      id: secretdata
+      uses: hashicorp/vault-action@v2.5.0
+      with:
+          url: ${{ secrets.VAULT_ADDR }}
+          role: gbg-coe-role-two-tier-cloudrun-firestore
+          method: jwt
+          path: gbg-coe-auth-two-tier-cloudrun-firestore
+          tlsSkipVerify: true
+          secrets: |
+            gbg-coe-secret-two-tier-cloudrun-firestore/sa_key GOOGLE_CREDENTIALS
   
     - name: Terraform Init
       run: terraform init
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }}
         
     - name: Terraform Validate
       run: terraform validate
@@ -39,12 +51,12 @@ jobs:
     - name: Terraform Plan
       run: terraform plan
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }}
         
     - name: Terraform Apply
       run: terraform apply -auto-approve
       env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}  
+        GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }}  
 
   terraform2:
     name: 'Image_Build'
@@ -53,17 +65,29 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore
+        working-directory: /home/runner/work/two-tier-cloudrun-firestore/two-tier-cloudrun-firestore
 
     steps:
-    
+            
       - name: Checkout
         uses: actions/checkout@v2
-  
+        
+      - name: Get Secrets
+        id: secretdata
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+            url: ${{ secrets.VAULT_ADDR }}
+            role: gbg-coe-role-two-tier-cloudrun-firestore
+            method: jwt
+            path: gbg-coe-auth-two-tier-cloudrun-firestore
+            tlsSkipVerify: true
+            secrets: |
+              gbg-coe-secret-two-tier-cloudrun-firestore/sa_key GOOGLE_CREDENTIALS
+
       - name: gcloud 
         uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
-          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+          service_account_key: ${{ env.GOOGLE_CREDENTIALS }}
 
       - run: |-
           gcloud --quiet auth configure-docker
@@ -79,12 +103,13 @@ jobs:
             gcloud --quiet auth configure-docker  
 
   terraform3:
-    name: 'Terraform 1st Deployment'
+    name: 'Terraform First Deployment'
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore/first-deployment
+        working-directory: /home/runner/work/two-tier-cloudrun-firestore/two-tier-cloudrun-firestore/first-deployment
+
     needs: terraform2
     steps:
       - name: Checkout code
@@ -92,37 +117,67 @@ jobs:
         
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
-
+      
+      - name: Get Secrets
+        id: secretdata
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+            url: ${{ secrets.VAULT_ADDR }}
+            role: gbg-coe-role-two-tier-cloudrun-firestore
+            method: jwt
+            path: gbg-coe-auth-two-tier-cloudrun-firestore
+            tlsSkipVerify: true
+            secrets: |
+              gbg-coe-secret-two-tier-cloudrun-firestore/sa_key GOOGLE_CREDENTIALS
+        
+      - name: Get Secrets
+        id: secretdata1
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          role: gbg-coe-role-two-tier-cloudrun-firestore-github
+          method: jwt
+          path: gbg-coe-auth-two-tier-cloudrun-firestore-github
+          tlsSkipVerify: true
+          secrets: |
+            gbg-coe-secret-two-tier-cloudrun-firestore-github/access_key ACCESS_CREDENTIALS
+      
+      - name: Pull private Terraform code
+        run: |
+       
+          git config --global url."https://"${{env.ACCESS_CREDENTIALS}}"@github.com/".insteadOf "https://github.com"
        
       - name: Terraform Init
         run: terraform init
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}    
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }}    
       
 
       - name: Terraform Validate
         run: terraform validate
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
 
       - name: Terraform Plan
         id: plan
         run: terraform plan 
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
+
 
   terraform4:
-    name: 'Terraform 2nd Deployment'
+    name: 'Terraform Second Deployment'
     runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
-        working-directory: /home/runner/work/CloudRun-API-Firestore/CloudRun-API-Firestore/second-deployment
+        working-directory: /home/runner/work/two-tier-cloudrun-firestore/two-tier-cloudrun-firestore/second-deployment
+    
     needs: terraform3
     steps:
       - name: Checkout code
@@ -130,38 +185,67 @@ jobs:
         
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
-
+      
+      - name: Get Secrets
+        id: secretdata
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+            url: ${{ secrets.VAULT_ADDR }}
+            role: gbg-coe-role-two-tier-cloudrun-firestore
+            method: jwt
+            path: gbg-coe-auth-two-tier-cloudrun-firestore
+            tlsSkipVerify: true
+            secrets: |
+              gbg-coe-secret-two-tier-cloudrun-firestore/sa_key GOOGLE_CREDENTIALS
+        
+      - name: Get Secrets
+        id: secretdata1
+        uses: hashicorp/vault-action@v2.5.0
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          role: gbg-coe-role-two-tier-cloudrun-firestore-github
+          method: jwt
+          path: gbg-coe-auth-two-tier-cloudrun-firestore-github
+          tlsSkipVerify: true
+          secrets: |
+            gbg-coe-secret-two-tier-cloudrun-firestore-github/access_key ACCESS_CREDENTIALS
+      
+      - name: Pull private Terraform code
+        run: |
+       
+          git config --global url."https://"${{env.ACCESS_CREDENTIALS}}"@github.com/".insteadOf "https://github.com"
+      
       - name: gcloud 
         uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
-          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+          service_account_key: ${{ env.GOOGLE_CREDENTIALS }}
         
       - name: env config 
         run: |
           export URL=$(gcloud run services describe book-shelf-app-001 --region=us-central1 --format='value(status.url)' --project=${{env.PROJECT_ID}}) 
           echo $URL
-          sed -i "s|XYZ|$URL|g" spec.yaml
+          sed -i "s|CLOUDRUN_URL|$URL|g" spec.yaml
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
-             
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
+          
       - name: Terraform Init
         run: terraform init
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}    
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }}    
       
 
       - name: Terraform Validate
         run: terraform validate
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
 
       - name: Terraform Plan
         id: plan
         run: terraform plan 
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }} 
+          GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
