@@ -210,11 +210,6 @@ jobs:
           secrets: |
             gbg-coe-secret-two-tier-cloudrun-firestore-github/access_key ACCESS_CREDENTIALS
       
-      - name: Pull private Terraform code
-        run: |
-       
-          git config --global url."https://"${{env.ACCESS_CREDENTIALS}}"@github.com/".insteadOf "https://github.com"
-      
       - name: gcloud 
         uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
         with:
@@ -227,7 +222,11 @@ jobs:
           sed -i "s|CLOUDRUN_URL|$URL|g" spec.yaml
         env:
           GOOGLE_CREDENTIALS: ${{ env.GOOGLE_CREDENTIALS }} 
-          
+
+      - name: Pull private Terraform code
+        run: |
+          git config --global url."https://"${{env.ACCESS_CREDENTIALS}}"@github.com/".insteadOf "https://github.com"
+
       - name: Terraform Init
         run: terraform init
         env:
