@@ -44,7 +44,7 @@ variable "config_file_path" {
   type        = string 
 }
 
-contents 
+
 variable "contents " {
   type        = string 
 }
