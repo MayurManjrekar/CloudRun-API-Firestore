@@ -29,7 +29,7 @@ resource "google_api_gateway_api_config" "api_cfg" {
   display_name  = var.config_name   #"Api Config"
   openapi_documents {
     document {
-      path     = "spec.yaml"
+      path     = var.config_file_path #"spec.yaml"
       contents = filebase64("spec.yaml")
     }
   }
