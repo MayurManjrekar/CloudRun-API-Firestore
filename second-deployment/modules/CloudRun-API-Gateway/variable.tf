@@ -43,3 +43,8 @@ variable "config_file_path" {
   description = "config file path"
   type        = string 
 }
+
+contents 
+variable "contents " {
+  type        = string 
+}
