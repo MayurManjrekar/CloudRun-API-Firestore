@@ -3,14 +3,14 @@
 ******************************************/
 
 module "api-gateway" {
-  source            = "./modules/CloudRun-API-Gateway"
+  source            = "github.com/Mayur-1999/module-referencing//modules/CloudRun-API-Gateway"
   region 	    = var.region
   project_id        = var.project_id
   config_file_path  = "spec.yaml"
   contents 	    = filebase64("spec.yaml")
   api_gateway_name  = var.api_gateway_name  #"Bookshelf API Gateway"
   api_id  	    = var.api_id            #"bookshelf-api-id"
-  config_name 	    = var.config_name	      #"Bookshelf API Config"
+  config_name 	    = var.config_name	    #"Bookshelf API Config"
   gateway_id  	    = var.gateway_id        #"bookshelf-gateway-id"
   gateway_name      = var.gateway_name      #"Bookshelf Gateway"
 }
