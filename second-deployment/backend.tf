@@ -1,6 +1,6 @@
 terraform {
    backend "gcs" {
-   bucket = "statefiles-bucket-ghasvfjnj"
-   prefix = "terraform/state01"
+   bucket = "statefiles-bucket-test-31"
+   prefix = "terraform/second-deployment-state"
   }
 }
