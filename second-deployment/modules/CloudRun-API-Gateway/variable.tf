@@ -45,6 +45,6 @@ variable "config_file_path" {
 }
 
 
-variable "contents " {
+variable "contents" {
   type        = string 
 }
